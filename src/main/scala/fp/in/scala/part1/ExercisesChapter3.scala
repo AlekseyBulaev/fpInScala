@@ -59,7 +59,7 @@ object ExercisesChapter3 {
    */
   @tailrec
   def dropWhile[A](l: List[A], f: A => Boolean): List[A] = l match {
-    case ::(head, next) if f(head) => dropWhile(next, f)
+    case ::(head, next) if(f(head)) =>  dropWhile(next, f)
     case _ => l
   }
 
