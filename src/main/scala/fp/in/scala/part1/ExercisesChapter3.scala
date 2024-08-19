@@ -1,8 +1,8 @@
 package fp.in.scala.part1
 
 import fp.in.scala.part1.Chapter3._
-
 import scala.annotation.tailrec
+
 import scala.collection.immutable.Nil.startsWith
 
 object ExercisesChapter3 {
@@ -143,7 +143,7 @@ object ExercisesChapter3 {
 
   /*
   3.15
-  Hard: Write a function that concatenates a list of lists into a single list.
+  Hard: Write a function that concatenates a list into a single list.
   Its runtime should be linear in the total length of all lists.
   Try to use functions we have already defined.
    */
@@ -230,7 +230,6 @@ object ExercisesChapter3 {
     case Nil => false
     case ::(_, next) => if (sup startsWith sub) true else hasSubsequence(next, sub)
   }
-
 
   /*
   3.25
