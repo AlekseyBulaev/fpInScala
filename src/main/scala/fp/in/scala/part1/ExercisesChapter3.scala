@@ -1,12 +1,15 @@
 package fp.in.scala.part1
 
+import fp.in.scala.part1.Chapter3._
+import scala.annotation.tailrec
+
 object ExercisesChapter3 {
 
   /*
   3.1
   What will be the result of the following match expression?
    */
-  val x = List(1, 2, 3, 4, 5) match {
+  val x: Int = List(1, 2, 3, 4, 5) match {
     case ::(x, ::(2, ::(4, _))) => x
     case Nil => 42
     case ::(x, ::(y, ::(3, ::(4, _)))) => x + y
@@ -21,26 +24,42 @@ object ExercisesChapter3 {
   What are different choices you could make in your implementation if the List is Nil?
   We'll return to this question in the next chapter.
    */
-  def tail[A](l: List[A]): List[A] = ???
+  def tail[A](l: List[A]): List[A] = l match {
+    case ::(_, next) => next
+    case Nil => sys.error("tail of empty list")
+  }
+
   /*
   3.3.
   Using the same idea, implement the function setHead
   for replacing the first element of a List with a different value.
    */
+  def setHead[A](l: List[A], z: A): List[A] = l match {
+    case ::(_, next) => ::(z, next)
+    case Nil => sys.error("setHead on empty list")
+  }
 
   /*
   3.4
-  Generalize tal to the function drop, which removes the first n elements from a list.
+  Generalize tail to the function drop, which removes the first n elements from a list.
   Note that this function takes time proportional only to the number of elements being dropped -
   we don't need to make a copy of the entire List.
    */
-  def drop[A](l: List[A], n: Int): List[A] = ???
+  @tailrec
+  def drop[A](l: List[A], n: Int): List[A] = l match {
+    case ::(_, next) => if (n == 0) l else drop(next, n - 1)
+    case Nil => Nil
+  }
 
   /*
   3.5
   Implement dropWhile, which removes elements from the List prefix as long as they match a predicate
    */
-  def dropWhile[A](l: List[A], f: A => Boolean): List[A] = ???
+  @tailrec
+  def dropWhile[A](l: List[A], f: A => Boolean): List[A] = l match {
+    case ::(head, next) if(f(head)) =>  dropWhile(next, f)
+    case _ => l
+  }
 
   /*
   3.6
@@ -49,19 +68,23 @@ object ExercisesChapter3 {
   So, given List(1,2,3,4), init will return List(1,2,3).
   Why can't this function be implemented in constant time like tail?
    */
-  def init[A](l: List[A]): List[A] = ???
+  def init[A](l: List[A]): List[A] = l match {
+    case ::(head, Nil) => Nil
+    case ::(head, tail) => ::(head, init(tail))
+    case Nil => sys.error("init on an empty list")
+  }
 
   /*
   3.7
   Can product, implemented using foldRight, immediately halt the recursion and return 0.0 if it encounters a 0.0?
-  Why or why not? COnsider how any short-circuiting might work if you call foldRight with a large list.
+  Why or why not? Consider how any short-circuiting might work if you call foldRight with a large list.
   This is a deeper question that we'll return to in chapter 5.
    */
 
   /*
   3.8
   See what happens when you pass Nil and :: themselves to foldRight, like this:
-  foldRight(List(1,2,3,), Nil:List[Int])(::(_,_)).
+  foldRight(List(1,2,3), Nil:List[Int])(::(_,_)).
   What do you think this says about the relationship between foldRight and the data constructors of List?
    */
 
@@ -69,7 +92,7 @@ object ExercisesChapter3 {
   3.9
   Compute the length of a list using foldRight.
    */
-  def length[A](l: List[A]): Int
+  def length[A](l: List[A]): Int = foldRight(l, 0)((_, b) => b + 1)
 
   /*
   3.10
