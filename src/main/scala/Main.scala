@@ -1,4 +1,5 @@
 import fp.in.scala.part1.ExercisesChapter3._
+import fp.in.scala.part1.ExercisesChapter2._
 
 object Main extends App {
 
