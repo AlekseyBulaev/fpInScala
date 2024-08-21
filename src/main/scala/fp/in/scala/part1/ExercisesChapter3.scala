@@ -143,7 +143,7 @@ object ExercisesChapter3 {
 
   /*
   3.15
-  Hard: Write a function that concatenates a list into a single list.
+  Hard: Write a function that concatenates a list of lists into a single list.
   Its runtime should be linear in the total length of all lists.
   Try to use functions we have already defined.
    */
