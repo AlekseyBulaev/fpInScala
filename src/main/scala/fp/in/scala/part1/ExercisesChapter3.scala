@@ -57,7 +57,7 @@ object ExercisesChapter3 {
    */
   @tailrec
   def dropWhile[A](l: List[A], f: A => Boolean): List[A] = l match {
-    case ::(head, next) if(f(head)) =>  dropWhile(next, f)
+    case ::(head, next) if f(head) => dropWhile(next, f)
     case _ => l
   }
 
@@ -87,7 +87,7 @@ object ExercisesChapter3 {
   foldRight(List(1,2,3), Nil:List[Int])(::(_,_)).
   What do you think this says about the relationship between foldRight and the data constructors of List?
    */
-
+  val testValue: List[Int] = foldRight(List(1,2,3), Nil:List[Int])(::(_,_))
   /*
   3.9
   Compute the length of a list using foldRight.
@@ -101,18 +101,28 @@ object ExercisesChapter3 {
   list-recursion function, foldLeft , that is tail-recursive, using the techniques
   we discussed in the previous chapter.
    */
-  def foldLeft[A, B](as: List[A], z: B)(f: (B, A) => B): B = ???
+  @tailrec
+  def foldLeft[A, B](as: List[A], z: B)(f: (B, A) => B): B = as match {
+    case Nil => z
+    case ::(head, next) => foldLeft(next, f(z, head))(f)
+  }
 
   /*
   3.11
   Write sum, product, and a function to compute the length of a list using foldLeft.
    */
+  def sumFoldLeft(ints: List[Int]): Int = foldLeft(ints, 0)(_ + _)
 
+  def productFoldLeft(ints: List[Int]): Int = foldLeft(ints, 1)(_ * _)
+
+  def lengthFoldLeft(ints: List[Int]): Int = foldLeft(ints, 0)((_, acc) => acc + 1)
   /*
   3.12
   Write a function that returns the reverse of a list (given List(1,2,3) it returns List(3,2,1).
   See if you can write it using fold.
    */
+  def reverse[A,B](l: List[A]): List[A] = foldLeft(l, List[A]())((b,a) => ::(a, b))
+
   /*
   3.13
   Hard: Can you write foldLeft in terms of foldRight?
