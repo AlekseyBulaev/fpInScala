@@ -135,20 +135,20 @@ object ExercisesChapter3 {
   3.14
   Implement append in terms of either foldLeft or foldRight
    */
-  def append[A](as: List[A], z: List[A]): List[A] = ???
+  def append[A,B](as: List[A], z: List[A]): List[A] = foldRight(as, z)((a,b) => ::(a,b))
 
   /*
   3.15
-  Hard: Write a function that concatenates a list into a single list.
+  Hard: Write a function that concatenates a list of lists into a single list.
   Its runtime should be linear in the total length of all lists.
   Try to use functions we have already defined.
    */
-
+  def flatten[A](in: List[List[A]]): List[A] = foldRight(in, Nil:List[A])(append)
 
   /*
   3.16
   write a function that transforms a list of integers by adding 1 to each element.
-  (Reminder: this should be a pure function that returns a new a list!)
+  (Reminder: this should be a pure function that returns a new list!)
   */
 
   /*
