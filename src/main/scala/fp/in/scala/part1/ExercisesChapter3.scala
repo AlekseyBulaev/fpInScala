@@ -150,19 +150,21 @@ object ExercisesChapter3 {
   write a function that transforms a list of integers by adding 1 to each element.
   (Reminder: this should be a pure function that returns a new list!)
   */
+  def transform(in: List[Int]): List[Int] = foldRight(in, Nil:List[Int])((a,b) => ::(a + 1, b))
 
   /*
   3.17
   Write a function that turns each value in a List[Double] into a String.
   You can use the expression d.toString to convert some d: Double to a String.
    */
+  def turn(in: List[Double]): List[String] = foldRight(in, Nil:List[String])((a,b) => ::(a.toString,b))
 
   /*
   3.18
   Write a function map that generalizes modifying each element in a list
   while maintaining the structure of the list.
    */
-  def map[A, B](as: List[A])(f: A => B): List[B] = ???
+  def map[A, B](as: List[A])(f: A => B): List[B] = foldRight(as, Nil:List[B])((a,b) => ::(f(a), b))
 
   /*
   3.19
