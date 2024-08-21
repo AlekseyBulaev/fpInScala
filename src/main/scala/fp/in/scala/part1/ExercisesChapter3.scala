@@ -6,7 +6,7 @@ object ExercisesChapter3 {
   3.1
   What will be the result of the following match expression?
    */
-  val x = List(1, 2, 3, 4, 5) match {
+  val x: Int  = List(1, 2, 3, 4, 5) match {
     case ::(x, ::(2, ::(4, _))) => x
     case Nil => 42
     case ::(x, ::(y, ::(3, ::(4, _)))) => x + y
@@ -69,7 +69,7 @@ object ExercisesChapter3 {
   3.9
   Compute the length of a list using foldRight.
    */
-  def length[A](l: List[A]): Int
+  def length[A](l: List[A]): Int = ???
 
   /*
   3.10
@@ -106,7 +106,7 @@ object ExercisesChapter3 {
 
   /*
   3.15
-  Hard: Write a function that concatenates a list into a single list.
+  Hard: Write a function that concatenates a list of a lists into a single list.
   Its runtime should be linear in the total length of all lists.
   Try to use functions we have already defined.
    */
@@ -115,7 +115,7 @@ object ExercisesChapter3 {
   /*
   3.16
   write a function that transforms a list of integers by adding 1 to each element.
-  (Reminder: this should be a pure function that returns a new a list!)
+  (Reminder: this should be a pure function that returns a new list!)
   */
 
   /*
