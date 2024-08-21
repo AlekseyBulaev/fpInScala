@@ -6,4 +6,15 @@ object Chapter3 {
     case ::(head, next) => f(head, foldRight(next, z)(f))
     case Nil => z
   }
+
+  def sum(ints: List[Int]): Int = ints match {
+    case Nil => 0
+    case ::(head, next) => head + sum(next)
+  }
+
+  def product(ints: List[Int]): Int = ints match {
+    case Nil => 1
+    case ::(0, _) => 0
+    case ::(head, next) => head * product(next)
+  }
 }
