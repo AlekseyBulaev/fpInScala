@@ -210,6 +210,11 @@ object ExercisesChapter3 {
   Generalize the function you just wrote so that it's not specific to integers or addition.
   Name your generalized function zipWith.
    */
+  def zipWith[A,B,C](as: List[A], bs: List[B])(f: (A,B) => C): List[C] = (as, bs) match {
+    case (_, Nil) => Nil
+    case (Nil, _) => Nil
+    case (::(head1, next1), ::(head2, next2)) => ::(f(head1, head2), zipWith(next1, next2)(f))
+  }
 
   /*
   3.24
@@ -220,7 +225,6 @@ object ExercisesChapter3 {
   in chapter 5 and hopefully improve on it.
   Note: Any two values x and y can be compared for equality in Scala using the expression x == y.
    */
-
   @tailrec
   def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = sup match {
     case Nil => false
