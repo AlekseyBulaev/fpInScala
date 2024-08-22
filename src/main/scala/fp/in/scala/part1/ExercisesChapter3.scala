@@ -1,7 +1,9 @@
 package fp.in.scala.part1
 
 import fp.in.scala.part1.Chapter3._
+
 import scala.annotation.tailrec
+import scala.collection.immutable.Nil.startsWith
 
 object ExercisesChapter3 {
 
@@ -87,7 +89,8 @@ object ExercisesChapter3 {
   foldRight(List(1,2,3), Nil:List[Int])(::(_,_)).
   What do you think this says about the relationship between foldRight and the data constructors of List?
    */
-  val testValue: List[Int] = foldRight(List(1,2,3), Nil:List[Int])(::(_,_))
+  val testValue: List[Int] = foldRight(List(1, 2, 3), Nil: List[Int])(::(_, _))
+
   /*
   3.9
   Compute the length of a list using foldRight.
@@ -116,12 +119,13 @@ object ExercisesChapter3 {
   def productFoldLeft(ints: List[Int]): Int = foldLeft(ints, 1)(_ * _)
 
   def lengthFoldLeft(ints: List[Int]): Int = foldLeft(ints, 0)((_, acc) => acc + 1)
+
   /*
   3.12
   Write a function that returns the reverse of a list (given List(1,2,3) it returns List(3,2,1).
   See if you can write it using fold.
    */
-  def reverse[A,B](l: List[A]): List[A] = foldLeft(l, List[A]())((b,a) => ::(a, b))
+  def reverse[A, B](l: List[A]): List[A] = foldLeft(l, List[A]())((b, a) => ::(a, b))
 
   /*
   3.13
@@ -135,7 +139,7 @@ object ExercisesChapter3 {
   3.14
   Implement append in terms of either foldLeft or foldRight
    */
-  def append[A,B](as: List[A], z: List[A]): List[A] = foldRight(as, z)((a,b) => ::(a,b))
+  def append[A, B](as: List[A], z: List[A]): List[A] = foldRight(as, z)((a, b) => ::(a, b))
 
   /*
   3.15
@@ -143,35 +147,37 @@ object ExercisesChapter3 {
   Its runtime should be linear in the total length of all lists.
   Try to use functions we have already defined.
    */
-  def flatten[A](in: List[List[A]]): List[A] = foldRight(in, Nil:List[A])(append)
+  def flatten[A](in: List[List[A]]): List[A] = foldRight(in, Nil: List[A])(append)
 
   /*
   3.16
   write a function that transforms a list of integers by adding 1 to each element.
   (Reminder: this should be a pure function that returns a new list!)
   */
-  def transform(in: List[Int]): List[Int] = foldRight(in, Nil:List[Int])((a,b) => ::(a + 1, b))
+  def transform(in: List[Int]): List[Int] = foldRight(in, Nil: List[Int])((a, b) => ::(a + 1, b))
 
   /*
   3.17
   Write a function that turns each value in a List[Double] into a String.
   You can use the expression d.toString to convert some d: Double to a String.
    */
-  def turn(in: List[Double]): List[String] = foldRight(in, Nil:List[String])((a,b) => ::(a.toString,b))
+  def turn(in: List[Double]): List[String] = foldRight(in, Nil: List[String])((a, b) => ::(a.toString, b))
 
   /*
   3.18
   Write a function map that generalizes modifying each element in a list
   while maintaining the structure of the list.
    */
-  def map[A, B](as: List[A])(f: A => B): List[B] = foldRight(as, Nil:List[B])((a,b) => ::(f(a), b))
+  def map[A, B](as: List[A])(f: A => B): List[B] = foldRight(as, Nil: List[B])((a, b) => ::(f(a), b))
 
   /*
   3.19
   Write a function filter that removes elements from a list unless they satisfy a given predicate.
   Use it to remove all odd numbers from a List[Int].
    */
-  def filter[A](as: List[A])(f: A => Boolean): List[A] = ???
+  def filter[A](as: List[A])(f: A => Boolean): List[A] = foldRight(as, Nil: List[A])((a, b) => {
+    if (f(a)) ::(a, b) else b
+  })
 
   /*
   3.20
@@ -179,17 +185,30 @@ object ExercisesChapter3 {
   will return a list instead of a single result,
   and that list should be inserted into the final resulting list.
    */
-  def flatMap[A, B](as: List[A])(f: A => List[B]): List[B] = ???
+  def flatMap[A, B](as: List[A])(f: A => List[B]): List[B] = flatten(map(as)(f))
 
   /*
   3.21
   Use flatMap to implement filter.
    */
 
+  def filterFromFlatMap[A](as: List[A])(f: A => Boolean): List[A] = flatMap(as)(a => if (f(a)) List(a) else Nil)
+
   /*
   3.22
-  Write a function that accepts tho lists and constructs a new list by adding corresponding elements.
+  Write a function that accepts two lists and constructs a new list by adding corresponding elements.
   For example, List(1,2,3) and List(4,5,6) become List(5,7,9).
+   */
+  def addPairWise(as: List[Int], bs: List[Int]): List[Int] = (as, bs) match {
+    case (_, Nil) => Nil
+    case (Nil, _) => Nil
+    case (::(head1, next1), ::(head2, next2)) => ::(head1 + head2, addPairWise(next1, next2))
+  }
+
+  /*
+  3.23
+  Generalize the function you just wrote so that it's not specific to integers or addition.
+  Name your generalized function zipWith.
    */
 
   /*
@@ -197,17 +216,18 @@ object ExercisesChapter3 {
   Hard: As an example, implement hasSubsequence for checking whether a List contains another List as a subsequence.
   For instance, List(1,2,3,4) would have List(1,2), List(2,3), List(4) as subsequence, among others.
   You may have some difficulty finding a concise purely function implementation that is also efficient.
-  THat's ok. Implement the function however comes most naturally. We'll return to this implementation
+  That's ok. Implement the function however comes most naturally. We'll return to this implementation
   in chapter 5 and hopefully improve on it.
   Note: Any two values x and y can be compared for equality in Scala using the expression x == y.
    */
 
-  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = ???
-  /*
-  3.23
-  Generalize the function you just wrote so that it's not specific to integers or addition.
-  Name your generalized function zipWith.
-   */
+  @tailrec
+  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = sup match {
+    case Nil => false
+    case ::(_, next) => if(sup startsWith sub) true else hasSubsequence(next, sub)
+  }
+
+
 
   /*
   3.25
