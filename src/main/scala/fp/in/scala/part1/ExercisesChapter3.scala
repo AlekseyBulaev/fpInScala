@@ -210,7 +210,7 @@ object ExercisesChapter3 {
   Generalize the function you just wrote so that it's not specific to integers or addition.
   Name your generalized function zipWith.
    */
-  def zipWith[A,B,C](as: List[A], bs: List[B])(f: (A,B) => C): List[C] = (as, bs) match {
+  def zipWith[A, B, C](as: List[A], bs: List[B])(f: (A, B) => C): List[C] = (as, bs) match {
     case (_, Nil) => Nil
     case (Nil, _) => Nil
     case (::(head1, next1), ::(head2, next2)) => ::(f(head1, head2), zipWith(next1, next2)(f))
@@ -228,32 +228,47 @@ object ExercisesChapter3 {
   @tailrec
   def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = sup match {
     case Nil => false
-    case ::(_, next) => if(sup startsWith sub) true else hasSubsequence(next, sub)
+    case ::(_, next) => if (sup startsWith sub) true else hasSubsequence(next, sub)
   }
-
 
 
   /*
   3.25
   Write a function size that counts the numbers of nodes (leaves and branches) in a tree.
    */
+  def size[A](t: Tree[A]): Int = t match {
+    case Leaf(_) => 1
+    case Branch(left, right) => 1 + size(left) + size(right)
+  }
 
   /*
   3.26
   Write a function maximum that returns the maximum element in a Tree[Int].
-  (Note: in Scala, you can use x.max(y) or x max y to compute the maximum of two integers aa and y.)
+  (Note: in Scala, you can use x.max(y) or x max y to compute the maximum of two integers a and y.)
    */
+  def maximum(t: Tree[Int]): Int = t match {
+    case Leaf(value) => value
+    case Branch(left, right) => maximum(left) max maximum(right)
+  }
 
   /*
   3.27
   Write a function depth that returns the maximum path length from the root of a tree to any leaf.
    */
+  def depth[A](t: Tree[A]): Int = t match {
+    case Leaf(_) => 0
+    case Branch(left, right) => (1 + depth(left)) max (1 + depth(right))
+  }
 
   /*
   3.28
   Write a function map, analogous to the method of the same name on List,
   that modifies each element in a tree with a given function.
    */
+  def map[A, B](t: Tree[A])(f: A => B): Tree[B] = t match {
+    case Leaf(value) => Leaf(f(value))
+    case Branch(left, right) => Branch(map(left)(f), map(right)(f))
+  }
 
   /*
   3.29
@@ -261,7 +276,18 @@ object ExercisesChapter3 {
   Reimplement them in terms of this more general function. Can you draw an analogy between
   this fold function and the left and right folds for List?
    */
+  def fold[A, B](t: Tree[A])(f: A => B)(g: (B, B) => B): B = t match {
+    case Leaf(value) => f(value)
+    case Branch(left, right) => g(fold(left)(f)(g), fold(right)(f)(g))
+  }
 
+  def sizeViaFold[A](t: Tree[A]): Int = fold(t)(_ => 1)(_ + _ + 1)
+
+  def maximumViaFold(t: Tree[Int]): Int = fold(t)(a => a)(_ max _)
+
+  def depthViaFold[A](t: Tree[A]): Int = fold(t)(_ => 0)(_ + 1 max _ + 1)
+
+  def mapViaFold[A, B](t: Tree[A])(f: A => B): Tree[B] = fold(t)(a => Leaf(f(a)): Tree[B])(Branch(_, _))
   /*
   Summary
   In this chapter, we covered a number of important concepts. We introduced algebraic sata types and
