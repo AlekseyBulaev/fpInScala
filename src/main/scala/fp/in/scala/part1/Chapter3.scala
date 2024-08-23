@@ -17,4 +17,8 @@ object Chapter3 {
     case ::(0, _) => 0
     case ::(head, next) => head * product(next)
   }
+
+  sealed trait Tree[+A]
+  case class Leaf[A](value: A) extends Tree[A]
+  case class Branch[A](left: Tree[A], right: Tree[A]) extends Tree[A]
 }
