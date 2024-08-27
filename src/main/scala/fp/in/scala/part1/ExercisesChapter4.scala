@@ -20,10 +20,10 @@ object ExercisesChapter4 {
   /*
   4.2
   Implement the variance function on terms of flatMap. If the mean of as sequence is m,
-  the variance is the mean of math.pow(x-m,2) fo each element x in the sequence.
+  the variance is the mean of math.pow(x-m,2) for each element x in the sequence.
   See the definition of variance on wikipedia (http://mng.bz/0Qsr)
    */
-  def variance(xs: Seq[Double]): Option[Double] = ???
+  def variance(xs: Seq[Double]): Option[Double] = mean(xs) flatMap(m => mean((xs.map(x => math.pow(x-m, 2)))))
 
 
 
