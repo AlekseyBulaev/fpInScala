@@ -1,6 +1,8 @@
 package fp.in.scala.part1
 
 import fp.in.scala.part1.Chapter4._
+
+import scala.collection.immutable.{AbstractSeq, LinearSeq}
 object ExercisesChapter4 {
   /*
   4.2
@@ -22,6 +24,8 @@ object ExercisesChapter4 {
   See the definition of variance on wikipedia (http://mng.bz/0Qsr)
    */
   def variance(xs: Seq[Double]): Option[Double] = ???
+
+
 
   /*
   4.3
