@@ -2,74 +2,68 @@ package fp.in.scala.part1
 
 object Chapter4 {
   sealed trait Option[+A] {
-    def map[B](f: A => B): Option[B]
+    def map[B](f: A => B): Option[B] = this match {
+      case Some(value) => Some(f(value))
+      case None => None
+    }
+    def getOrElse[B >: A](default: => B): B = this match {
+      case Some(value) => value
+      case None => default
+    }
 
-    def flatMap[B](f: A => Option[B]): Option[B]
+    def flatMap[B](f: A => Option[B]): Option[B] = this match {
+      case Some(value) => f(value)
+      case None => None
+    }
 
-    def getOrElse[B >: A](default: => B): B
+    def flatMapViaMap[B](f: A => Option[B]): Option[B] = map(f) getOrElse None
 
-    def orElse[B >: A](ob: => Option[B]): Option[B]
+    def orElse[B >: A](ob: => Option[B]): Option[B] = this match {
+      case Some(value) => this
+      case None => ob
+    }
 
-    def filter(f: A => Boolean): Option[A]
+    def orElseViaGetOrElse[B >: A](ob: => Option[B]): Option[B] = this map(Some(_)) getOrElse ob
+    def filter(f: A => Boolean): Option[A] = this match {
+      case Some(value) if (f(value)) => Some(value)
+      case _ => None
+    }
+
+    def filterViaFlatMap(f: A => Boolean): Option[A] = flatMap(a => if(f(a)) Some(a) else None)
   }
+  case class Some[A](value: A) extends Option[A]
 
-  case class Some[A](value: A) extends Option[A] {
-    override def map[B](f: A => B): Option[B] = ???
-
-    override def flatMap[B](f: A => Option[B]): Option[B] = ???
-
-    override def getOrElse[B >: A](default: => B): B = ???
-
-    override def orElse[B >: A](ob: => Option[B]): Option[B] = ???
-
-    override def filter(f: A => Boolean): Option[A] = ???
-  }
-
-  case object None extends Option[Nothing] {
-    override def map[B](f: Nothing => B): Option[B] = ???
-
-    override def flatMap[B](f: Nothing => Option[B]): Option[B] = ???
-
-    override def getOrElse[B >: Nothing](default: => B): B = ???
-
-    override def orElse[B >: Nothing](ob: => Option[B]): Option[B] = ???
-
-    override def filter(f: Nothing => Boolean): Option[Nothing] = ???
-  }
+  case object None extends Option[Nothing]
 
   def mean(xs: Seq[Double]): Double =
     if (xs.isEmpty) throw new ArithmeticException("mean of empty list!")
     else xs.sum / xs.length
 
   sealed trait Either[+E, +A] {
-    def map[B](f: A => B): Either[E, B]
+    def map[B](f: A => B): Either[E, B] = this match {
+      case Left(value) => Left(value)
+      case Right(value) => Right(f(value))
+    }
 
-    def flatMap[EE >: E, B](f: A => Either[EE, B]): Either[EE, B]
+    def flatMap[EE >: E, B](f: A => Either[EE, B]): Either[EE, B] = this match {
+      case Left(value) => Left(value)
+      case Right(value) => f(value)
+    }
 
-    def orElse[EE >: E, B >: A](b: => Either[EE, B]): Either[EE, B]
+    def orElse[EE >: E, B >: A](b: => Either[EE, B]): Either[EE, B] = this match {
+      case Left(value) => b
+      case _ => this
+    }
 
-    def map2[EE >: E, B, C](b: Either[EE, B])(f: (A, B) => C): Either[EE, C]
+    def map2[EE >: E, B, C](b: Either[EE, B])(f: (A, B) => C): Either[EE, C] = this match {
+      case Left(value) => ???
+      case Right(value) => ???
+    }
   }
 
-  case class Left[+E](value: E) extends Either[E, Nothing] {
-    override def map[B](f: Nothing => B): Either[E, B] = ???
+  case class Left[+E](value: E) extends Either[E, Nothing]
 
-    override def flatMap[EE >: E, B](f: Nothing => Either[EE, B]): Either[EE, B] = ???
-
-    override def orElse[EE >: E, B >: Nothing](b: => Either[EE, B]): Either[EE, B] = ???
-
-    override def map2[EE >: E, B, C](b: Either[EE, B])(f: (Nothing, B) => C): Either[EE, C] = ???
-  }
-
-  case class Right[+A](value: A) extends Either[Nothing, A] {
-    override def map[B](f: A => B): Either[Nothing, B] = ???
-
-    override def flatMap[EE >: Nothing, B](f: A => Either[EE, B]): Either[EE, B] = ???
-
-    override def orElse[EE >: Nothing, B >: A](b: => Either[EE, B]): Either[EE, B] = ???
-
-    override def map2[EE >: Nothing, B, C](b: Either[EE, B])(f: (A, B) => C): Either[EE, C] = ???
-  }
+  case class Right[+A](value: A) extends Either[Nothing, A]
 
   /*
   Summary
