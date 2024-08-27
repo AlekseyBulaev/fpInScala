@@ -37,9 +37,9 @@ object Chapter4 {
     override def filter(f: Nothing => Boolean): Option[Nothing] = ???
   }
 
-  def mean(xs: Seq[Double]): Double =
-    if (xs.isEmpty) throw new ArithmeticException("mean of empty list!")
-    else xs.sum / xs.length
+  def mean(xs: Seq[Double]): Option[Double] =
+    if (xs.isEmpty) None
+    else Some(xs.sum / xs.length)
 
   sealed trait Either[+E, +A] {
     def map[B](f: A => B): Either[E, B]
