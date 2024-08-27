@@ -39,6 +39,12 @@ object Chapter4 {
     if (xs.isEmpty) None
     else Some(xs.sum / xs.length)
 
+  /*
+  This tells us that any function that we already have lying around can be transformed
+  (via lift) to operate within the context of a single Option value.
+   */
+  def lift[A,B](f: A=>B): Option[A] => Option[B] = _ map f
+
   sealed trait Either[+E, +A] {
     def map[B](f: A => B): Either[E, B] = this match {
       case Left(value) => Left(value)
