@@ -1,4 +1,5 @@
 import fp.in.scala.part1.Chapter3.{Branch, Leaf, Tree}
+import fp.in.scala.part1.ExercisesChapter4._
 import fp.in.scala.part1.ExercisesChapter3._
 import fp.in.scala.part1.ExercisesChapter2._
 

@@ -1,5 +1,6 @@
 package fp.in.scala.part1
 
+import fp.in.scala.part1.Chapter3._
 import fp.in.scala.part1.Chapter4._
 
 import scala.collection.immutable.{AbstractSeq, LinearSeq}
@@ -53,7 +54,7 @@ object ExercisesChapter4 {
   efficient implementation that only looks at the list once. In fact, implementation sequence in terms
   of traverse.
    */
-
+  def traverse[A,B](a: List[A])(f: A => Option[B]): Option[List[B]] = ???
   /*
   4.6
   Implement versions of map, flatMap, orElse, and map2 on Either that operate on the Right value.
@@ -65,6 +66,7 @@ object ExercisesChapter4 {
   encountered, if there is one
    */
   def sequence[E, A](es: List[Either[E,A]]): Either[E, List[A]] = ???
+
   def traverse[E,A,B](as: List[A])(f: A => Either[E,B]): Either[E, List[B]] = ???
 
   /*
