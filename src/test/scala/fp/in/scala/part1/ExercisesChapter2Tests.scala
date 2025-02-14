@@ -3,7 +3,7 @@ package fp.in.scala.part1
 import fp.in.scala.part1.ExercisesChapter2._
 import org.scalatest.flatspec.AnyFlatSpec
 
-class ExercisesChapter2Test extends AnyFlatSpec {
+class ExercisesChapter2Tests extends AnyFlatSpec {
   "fibonacci number" should "return from function" in {
     assert(fib(10) == 55)
   }
