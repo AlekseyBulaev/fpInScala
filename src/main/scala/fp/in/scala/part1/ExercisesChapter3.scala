@@ -1,12 +1,15 @@
 package fp.in.scala.part1
 
+import fp.in.scala.part1.Chapter3._
+import scala.annotation.tailrec
+
 object ExercisesChapter3 {
 
   /*
   3.1
   What will be the result of the following match expression?
    */
-  val x: Int  = List(1, 2, 3, 4, 5) match {
+  val x: Int = List(1, 2, 3, 4, 5) match {
     case ::(x, ::(2, ::(4, _))) => x
     case Nil => 42
     case ::(x, ::(y, ::(3, ::(4, _)))) => x + y
@@ -22,11 +25,13 @@ object ExercisesChapter3 {
   We'll return to this question in the next chapter.
    */
   def tail[A](l: List[A]): List[A] = ???
+
   /*
   3.3.
   Using the same idea, implement the function setHead
   for replacing the first element of a List with a different value.
    */
+  def setHead[A](l: List[A], newHead: A): List[A] = ???
 
   /*
   3.4
@@ -34,7 +39,8 @@ object ExercisesChapter3 {
   Note that this function takes time proportional only to the number of elements being dropped -
   we don't need to make a copy of the entire List.
    */
-  def drop[A](l: List[A], n: Int): List[A] = ???
+//  @tailrec
+//  def drop[A](l: List[A], n: Int): List[A] = ???
 
   /*
   3.5
@@ -54,7 +60,7 @@ object ExercisesChapter3 {
   /*
   3.7
   Can product, implemented using foldRight, immediately halt the recursion and return 0.0 if it encounters a 0.0?
-  Why or why not? COnsider how any short-circuiting might work if you call foldRight with a large list.
+  Why or why not? Consider how any short-circuiting might work if you call foldRight with a large list.
   This is a deeper question that we'll return to in chapter 5.
    */
 
@@ -78,18 +84,24 @@ object ExercisesChapter3 {
   list-recursion function, foldLeft , that is tail-recursive, using the techniques
   we discussed in the previous chapter.
    */
+//  @tailrec
   def foldLeft[A, B](as: List[A], z: B)(f: (B, A) => B): B = ???
 
   /*
   3.11
   Write sum, product, and a function to compute the length of a list using foldLeft.
    */
+  def sumViaFoldLeft(ints: List[Int]): Int = ???
+  def productViaFoldLeft(ints: List[Int]): Int = ???
+  def lengthViaFoldLeft[A](l: List[A]): Int = ???
 
   /*
   3.12
   Write a function that returns the reverse of a list (given List(1,2,3) it returns List(3,2,1).
   See if you can write it using fold.
    */
+  def reverse[A](l: List[A]): List[A] = ???
+
   /*
   3.13
   Hard: Can you write foldLeft in terms of foldRight?
@@ -98,11 +110,15 @@ object ExercisesChapter3 {
   which means it works even for large lists without overflowing the stack.
    */
 
+  def foldLeftViaFoldRight[A, B](l: List[A], z: B)(f: (B, A) => B): B = ???
+  def foldRightViaFoldLeft[A, B](as: List[A], z: B)(f: (A, B) => B): B = ???
+
   /*
   3.14
   Implement append in terms of either foldLeft or foldRight
    */
-  def append[A](as: List[A], z: List[A]): List[A] = ???
+  def appendViaFoldLeft[A](as: List[A], z: List[A]): List[A] = ???
+  def appendViaFoldRight[A](as: List[A], z: List[A]): List[A] = ???
 
   /*
   3.15
@@ -110,7 +126,7 @@ object ExercisesChapter3 {
   Its runtime should be linear in the total length of all lists.
   Try to use functions we have already defined.
    */
-
+  def concat[A](l: List[List[A]]): List[A] = ???
 
   /*
   3.16
@@ -118,11 +134,14 @@ object ExercisesChapter3 {
   (Reminder: this should be a pure function that returns a new list!)
   */
 
+  def addOne(l: List[Int]): List[Int] = ???
   /*
   3.17
   Write a function that turns each value in a List[Double] into a String.
   You can use the expression d.toString to convert some d: Double to a String.
    */
+
+  def doublesToString(l: List[Double]): List[String] = ???
 
   /*
   3.18
@@ -150,29 +169,32 @@ object ExercisesChapter3 {
   3.21
   Use flatMap to implement filter.
    */
+  def filterViaFlatMap[A](as: List[A])(f: A => Boolean): List[A] = ???
 
   /*
   3.22
-  Write a function that accepts tho lists and constructs a new list by adding corresponding elements.
+  Write a function that accepts two lists and constructs a new list by adding corresponding elements.
   For example, List(1,2,3) and List(4,5,6) become List(5,7,9).
    */
+  def addPairwise(as: List[Int], l: List[Int]): List[Int] = ???
+
+  /*
+  3.23
+  Generalize the function you just wrote so that it's not specific to integers or addition.
+  Name your generalized function zipWith.
+   */
+  def zipWith[A, B, C](as: List[A], l: List[B])(f: (A, B) => C): List[C] = ???
 
   /*
   3.24
   Hard: As an example, implement hasSubsequence for checking whether a List contains another List as a subsequence.
   For instance, List(1,2,3,4) would have List(1,2), List(2,3), List(4) as subsequence, among others.
   You may have some difficulty finding a concise purely function implementation that is also efficient.
-  THat's ok. Implement the function however comes most naturally. We'll return to this implementation
+  That's ok. Implement the function however comes most naturally. We'll return to this implementation
   in chapter 5 and hopefully improve on it.
   Note: Any two values x and y can be compared for equality in Scala using the expression x == y.
    */
-
-  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = ???
-  /*
-  3.23
-  Generalize the function you just wrote so that it's not specific to integers or addition.
-  Name your generalized function zipWith.
-   */
+  def hasSubsequence[A, B](sup: List[A], sub: List[B]): Boolean = ???
 
   /*
   3.25
