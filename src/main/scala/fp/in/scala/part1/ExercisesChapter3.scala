@@ -39,8 +39,7 @@ object ExercisesChapter3 {
   Note that this function takes time proportional only to the number of elements being dropped -
   we don't need to make a copy of the entire List.
    */
-//  @tailrec
-//  def drop[A](l: List[A], n: Int): List[A] = ???
+  def drop[A](l: List[A], n: Int): List[A] = ???
 
   /*
   3.5
@@ -84,7 +83,6 @@ object ExercisesChapter3 {
   list-recursion function, foldLeft , that is tail-recursive, using the techniques
   we discussed in the previous chapter.
    */
-//  @tailrec
   def foldLeft[A, B](as: List[A], z: B)(f: (B, A) => B): B = ???
 
   /*
@@ -92,7 +90,9 @@ object ExercisesChapter3 {
   Write sum, product, and a function to compute the length of a list using foldLeft.
    */
   def sumViaFoldLeft(ints: List[Int]): Int = ???
+
   def productViaFoldLeft(ints: List[Int]): Int = ???
+
   def lengthViaFoldLeft[A](l: List[A]): Int = ???
 
   /*
@@ -111,6 +111,7 @@ object ExercisesChapter3 {
    */
 
   def foldLeftViaFoldRight[A, B](l: List[A], z: B)(f: (B, A) => B): B = ???
+
   def foldRightViaFoldLeft[A, B](as: List[A], z: B)(f: (A, B) => B): B = ???
 
   /*
@@ -118,6 +119,7 @@ object ExercisesChapter3 {
   Implement append in terms of either foldLeft or foldRight
    */
   def appendViaFoldLeft[A](as: List[A], z: List[A]): List[A] = ???
+
   def appendViaFoldRight[A](as: List[A], z: List[A]): List[A] = ???
 
   /*
@@ -194,29 +196,33 @@ object ExercisesChapter3 {
   in chapter 5 and hopefully improve on it.
   Note: Any two values x and y can be compared for equality in Scala using the expression x == y.
    */
-  def hasSubsequence[A, B](sup: List[A], sub: List[B]): Boolean = ???
+  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = ???
 
   /*
   3.25
   Write a function size that counts the numbers of nodes (leaves and branches) in a tree.
    */
+  def size[A](t: Tree[A]): Int = ???
 
   /*
   3.26
   Write a function maximum that returns the maximum element in a Tree[Int].
   (Note: in Scala, you can use x.max(y) or x max y to compute the maximum of two integers aa and y.)
    */
+  def maximum(t: Tree[Int]): Int = ???
 
   /*
   3.27
   Write a function depth that returns the maximum path length from the root of a tree to any leaf.
    */
+  def depth[A](t: Tree[A]): Int = ???
 
   /*
   3.28
   Write a function map, analogous to the method of the same name on List,
   that modifies each element in a tree with a given function.
    */
+  def map[A, B](t: Tree[A])(f: A => B): Tree[B] = ???
 
   /*
   3.29
@@ -224,6 +230,15 @@ object ExercisesChapter3 {
   Reimplement them in terms of this more general function. Can you draw an analogy between
   this fold function and the left and right folds for List?
    */
+  def fold[A, B](t: Tree[A])(f: A => B)(g: (B, B) => B): B = ???
+
+  def mapViaFold[A, B](t: Tree[A])(f: A => B): Tree[B] = ???
+
+  def sizeViaFold[A](t: Tree[A]): Int = ???
+
+  def maximumViaFold(t: Tree[Int]): Int = ???
+
+  def depthViaFold[A](t: Tree[A]): Int = ???
 
   /*
   Summary
