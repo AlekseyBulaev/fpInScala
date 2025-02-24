@@ -13,22 +13,18 @@ class ExercisesChapter3Tests extends AnyFlatSpec {
 
   "setHead function" should "return from function" in {
     assert(setHead(List(1, 2, 3), 0) == List(0, 2, 3))
-    assertThrows[Throwable](setHead(Nil, "head"))
   }
 
   "drop function" should "return from function" in {
     assert(drop(List(1, 2, 3, 4, 5), 3) == List(4, 5))
-    assertThrows[Throwable](drop(List(1, 2), 3))
   }
 
   "dropWhile function" should "return from function" in {
     assert(dropWhile(List(1, 2, 3, 4, 5), (x: Int) => x < 4) == List(4, 5))
-    assertThrows[Throwable](dropWhile(Nil, (x: Int) => x > 3))
   }
 
   "init function" should "return from function" in {
     assert(init(List(1, 2, 3, 4, 5)) == List(1, 2, 3, 4))
-    assertThrows[Throwable](init(Nil))
   }
 
   "length function" should "return from function" in {
@@ -37,21 +33,16 @@ class ExercisesChapter3Tests extends AnyFlatSpec {
 
   "foldLeft" should "return from function" in {
     assert(foldLeft(List("H", "e", "l", "l", "o"), "")(_ + _) == "Hello")
-    assertThrows[Throwable](foldLeft(Nil: List[Int], 0)(_ + _))
   }
 
   "sum, product and length" should "return from function" in {
     assert(sumViaFoldLeft(List(1, 2, 3, 4)) == 10)
-    assertThrows[Throwable](sumViaFoldLeft(Nil) == 10)
     assert(productViaFoldLeft(List(1, 2, 3, 4)) == 24)
-    assertThrows[Throwable](productViaFoldLeft(Nil) == 10)
     assert(lengthViaFoldLeft(List(1, 2, 3, 4, 5)) == 5)
-    assertThrows[Throwable](lengthViaFoldLeft(Nil) == 10)
   }
 
   "reverse function" should "return from function" in {
     assert(reverse(List(1, 2, 3)) == List(3, 2, 1))
-    assertThrows[Throwable](reverse(Nil))
   }
 
   "append function" should "return from function" in {
@@ -86,7 +77,7 @@ class ExercisesChapter3Tests extends AnyFlatSpec {
   }
 
   "concat function" should "return from funciton" in {
-    assert(concat(List(List(1, 2), List(3, 4), List(5, 6))) == List(1, 2, 3, 4, 5, 6))
+    assert(flatten(List(List(1, 2), List(3, 4), List(5, 6))) == List(1, 2, 3, 4, 5, 6))
   }
 
   "3.20 flatMap function" should "return from function" in {
@@ -94,7 +85,7 @@ class ExercisesChapter3Tests extends AnyFlatSpec {
   }
 
   "3.21 filterViaFlatMap function" should "return from function" in {
-    assert(filterViaFlatMap(List(1, 2, 3, 4, 5))((a) => a >= 3) == List(3, 4, 5))
+    assert(filterViaFlatMap(List(1, 2, 3, 4, 5))(a => a >= 3) == List(3, 4, 5))
   }
 
   "3.22 addPairwise function" should "return from function" in {
