@@ -118,7 +118,7 @@ object ExercisesChapter3 {
 
   def productViaFoldLeft(ints: List[Int]): Int = foldLeft(ints, 1)(_ * _)
 
-  def lengthViaFoldLeft(ints: List[Int]): Int = foldLeft(ints, 0)((_, acc) => acc + 1)
+  def lengthViaFoldLeft(ints: List[Int]): Int = foldRight(ints, 0)((_, acc) => acc + 1)
 
   /*
   3.12
@@ -135,9 +135,9 @@ object ExercisesChapter3 {
   which means it works even for large lists without overflowing the stack.
    */
 
-  def foldLeftViaFoldRight[A, B](l: List[A], z: B)(f: (B, A) => B): B = ???
+  def foldLeftViaFoldRight[A, B](l: List[A], z: B)(f: (B, A) => B): B = foldRight(l, z)((a,b) => f(b,a))
 
-  def foldRightViaFoldLeft[A, B](as: List[A], z: B)(f: (A, B) => B): B = ???
+  def foldRightViaFoldLeft[A, B](as: List[A], z: B)(f: (A, B) => B): B = foldLeft(as.reverse, z)((b,a) => f(a,b))
 
   /*
   3.14
@@ -145,7 +145,7 @@ object ExercisesChapter3 {
    */
   def appendViaFoldRight[A](as: List[A], z: List[A]): List[A] = foldRight(as, z)((a, b) => ::(a, b))
 
-  def appendViaFoldLeft[A](as: List[A], z: List[A]): List[A] = ???
+  def appendViaFoldLeft[A](as: List[A], z: List[A]): List[A] = foldLeft(as.reverse, z)((b,a) => ::(a,b))
 
   /*
   3.15
@@ -153,7 +153,7 @@ object ExercisesChapter3 {
   Its runtime should be linear in the total length of all lists.
   Try to use functions we have already defined.
    */
-  def flatten[A](in: List[List[A]]): List[A] = foldRight(in, Nil: List[A])(append)
+  def flatten[A](in: List[List[A]]): List[A] = foldRight(in, Nil: List[A])(appendViaFoldRight)
 
   /*
   3.16
@@ -205,10 +205,10 @@ object ExercisesChapter3 {
   Write a function that accepts two lists and constructs a new list by adding corresponding elements.
   For example, List(1,2,3) and List(4,5,6) become List(5,7,9).
    */
-  def addPairWise(as: List[Int], bs: List[Int]): List[Int] = (as, bs) match {
+  def addPairwise(as: List[Int], bs: List[Int]): List[Int] = (as, bs) match {
     case (_, Nil) => Nil
     case (Nil, _) => Nil
-    case (::(head1, next1), ::(head2, next2)) => ::(head1 + head2, addPairWise(next1, next2))
+    case (::(head1, next1), ::(head2, next2)) => ::(head1 + head2, addPairwise(next1, next2))
   }
 
   /*
@@ -261,7 +261,7 @@ object ExercisesChapter3 {
   Write a function depth that returns the maximum path length from the root of a tree to any leaf.
    */
   def depth[A](t: Tree[A]): Int = t match {
-    case Leaf(_) => 0
+    case Leaf(_) => 1
     case Branch(left, right) => (1 + depth(left)) max (1 + depth(right))
   }
 
@@ -292,9 +292,7 @@ object ExercisesChapter3 {
 
   def maximumViaFold(t: Tree[Int]): Int = fold(t)(a => a)(_ max _)
 
-  def depthViaFold[A](t: Tree[A]): Int = fold(t)(_ => 0)(_ + 1 max _ + 1)
-
-  def mapViaFold[A, B](t: Tree[A])(f: A => B): Tree[B] = fold(t)(a => Leaf(f(a)): Tree[B])(Branch(_, _))
+  def depthViaFold[A](t: Tree[A]): Int = fold(t)(_ => 1)(_ + 1 max _ + 1)
 
   /*
   Summary
