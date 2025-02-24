@@ -59,7 +59,7 @@ object ExercisesChapter3 {
    */
   @tailrec
   def dropWhile[A](l: List[A], f: A => Boolean): List[A] = l match {
-    case ::(head, next) if(f(head)) =>  dropWhile(next, f)
+    case ::(head, next) if (f(head)) => dropWhile(next, f)
     case _ => l
   }
 
@@ -114,18 +114,18 @@ object ExercisesChapter3 {
   3.11
   Write sum, product, and a function to compute the length of a list using foldLeft.
    */
-  def sumFoldLeft(ints: List[Int]): Int = foldLeft(ints, 0)(_ + _)
+  def sumViaFoldLeft(ints: List[Int]): Int = foldLeft(ints, 0)(_ + _)
 
-  def productFoldLeft(ints: List[Int]): Int = foldLeft(ints, 1)(_ * _)
+  def productViaFoldLeft(ints: List[Int]): Int = foldLeft(ints, 1)(_ * _)
 
-  def lengthFoldLeft(ints: List[Int]): Int = foldLeft(ints, 0)((_, acc) => acc + 1)
+  def lengthViaFoldLeft(ints: List[Int]): Int = foldLeft(ints, 0)((_, acc) => acc + 1)
 
   /*
   3.12
   Write a function that returns the reverse of a list (given List(1,2,3) it returns List(3,2,1).
   See if you can write it using fold.
    */
-  def reverse[A, B](l: List[A]): List[A] = foldLeft(l, List[A]())((b, a) => ::(a, b))
+  def reverse[A](l: List[A]): List[A] = foldLeft(l, List[A]())((b, a) => ::(a, b))
 
   /*
   3.13
@@ -135,11 +135,17 @@ object ExercisesChapter3 {
   which means it works even for large lists without overflowing the stack.
    */
 
+  def foldLeftViaFoldRight[A, B](l: List[A], z: B)(f: (B, A) => B): B = ???
+
+  def foldRightViaFoldLeft[A, B](as: List[A], z: B)(f: (A, B) => B): B = ???
+
   /*
   3.14
   Implement append in terms of either foldLeft or foldRight
    */
-  def append[A, B](as: List[A], z: List[A]): List[A] = foldRight(as, z)((a, b) => ::(a, b))
+  def appendViaFoldRight[A](as: List[A], z: List[A]): List[A] = foldRight(as, z)((a, b) => ::(a, b))
+
+  def appendViaFoldLeft[A](as: List[A], z: List[A]): List[A] = ???
 
   /*
   3.15
@@ -154,14 +160,14 @@ object ExercisesChapter3 {
   write a function that transforms a list of integers by adding 1 to each element.
   (Reminder: this should be a pure function that returns a new list!)
   */
-  def transform(in: List[Int]): List[Int] = foldRight(in, Nil: List[Int])((a, b) => ::(a + 1, b))
+  def addOne(in: List[Int]): List[Int] = foldRight(in, Nil: List[Int])((a, b) => ::(a + 1, b))
 
   /*
   3.17
   Write a function that turns each value in a List[Double] into a String.
   You can use the expression d.toString to convert some d: Double to a String.
    */
-  def turn(in: List[Double]): List[String] = foldRight(in, Nil: List[String])((a, b) => ::(a.toString, b))
+  def doublesToString(in: List[Double]): List[String] = foldRight(in, Nil: List[String])((a, b) => ::(a.toString, b))
 
   /*
   3.18
@@ -192,7 +198,7 @@ object ExercisesChapter3 {
   Use flatMap to implement filter.
    */
 
-  def filterFromFlatMap[A](as: List[A])(f: A => Boolean): List[A] = flatMap(as)(a => if (f(a)) List(a) else Nil)
+  def filterViaFlatMap[A](as: List[A])(f: A => Boolean): List[A] = flatMap(as)(a => if (f(a)) List(a) else Nil)
 
   /*
   3.22
@@ -280,6 +286,8 @@ object ExercisesChapter3 {
     case Branch(left, right) => g(fold(left)(f)(g), fold(right)(f)(g))
   }
 
+  def mapViaFold[A, B](t: Tree[A])(f: A => B): Tree[B] = fold(t)(a => Leaf(f(a)): Tree[B])(Branch(_, _))
+
   def sizeViaFold[A](t: Tree[A]): Int = fold(t)(_ => 1)(_ + _ + 1)
 
   def maximumViaFold(t: Tree[Int]): Int = fold(t)(a => a)(_ max _)
@@ -287,6 +295,7 @@ object ExercisesChapter3 {
   def depthViaFold[A](t: Tree[A]): Int = fold(t)(_ => 0)(_ + 1 max _ + 1)
 
   def mapViaFold[A, B](t: Tree[A])(f: A => B): Tree[B] = fold(t)(a => Leaf(f(a)): Tree[B])(Branch(_, _))
+
   /*
   Summary
   In this chapter, we covered a number of important concepts. We introduced algebraic sata types and
